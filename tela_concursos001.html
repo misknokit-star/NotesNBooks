@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotesNBooks — Concursos Literários</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-0: #0B0F19;
+            --bg-1: #111627;
+            --bg-2: #0F1424;
+            --bg-3: #141A2E;
+            --panel: #0E1324;
+            --muted: #1E2743;
+            --muted-2: #2A3560;
+            --text: #E6ECFA;
+            --text-dim: #9FB1D9;
+            --accent: #4F7CF7;
+            --accent-2: #00D4FF;
+            --accent-purple: #9D7CF7;
+            --success: #2FB57A;
+            --warning: #F7B84F;
+            --danger: #EF4444;
+            --radius: 24px;
+            --radius-sm: 16px;
+            --shadow: 0 18px 30px rgba(0,0,0,.45);
+        }
+
+        * { 
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system, sans-serif;
+            background: radial-gradient(1200px 800px at 20% 10%, #0F162C 0%, var(--bg-0) 45%) fixed;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(14, 19, 36, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* Header com navegação */
+        .header {
+            background: rgba(15, 22, 44, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(79, 124, 247, 0.22);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            background: rgba(18, 23, 43, 0.6);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #DDE6FB;
+            font-weight: 500;
+            padding: 8px 24px;
+            border-radius: 40px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background: rgba(79, 124, 247, 0.15);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(180deg, #172042, #151C36);
+            box-shadow: 0 4px 12px rgba(79, 124, 247, 0.25);
+            color: #EAF0FF;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-area span {
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Conteúdo principal */
+        .main-content {
+            padding: 32px;
+        }
+
+        /* Título da página */
+        .page-title {
+            margin-bottom: 32px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-title p {
+            color: var(--text-dim);
+            font-size: 16px;
+        }
+
+        /* Filtros e categorias */
+        .filters-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            background: rgba(14, 19, 36, 0.6);
+            padding: 8px;
+            border-radius: 60px;
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            width: fit-content;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 40px;
+            background: transparent;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(79, 124, 247, 0.15);
+            color: white;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+            box-shadow: 0 8px 16px rgba(79, 124, 247, 0.3);
+        }
+
+        /* Grid de concursos */
+        .contests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .contest-card {
+            background: rgba(14, 19, 36, 0.6);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .contest-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px rgba(79, 124, 247, 0.2);
+            border-color: rgba(79, 124, 247, 0.4);
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            background: rgba(20, 26, 46, 0.6);
+            border-bottom: 1px solid rgba(79, 124, 247, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-badge {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-badge.voting {
+            background: var(--warning);
+            color: #0B0F19;
+        }
+
+        .card-badge.preparing {
+            background: var(--muted-2);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .contest-theme {
+            background: rgba(20, 26, 46, 0.6);
+            padding: 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-2);
+        }
+
+        .contest-theme h4 {
+            color: var(--accent-2);
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contest-theme p {
+            color: var(--text);
+            font-weight: 500;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .contest-prize {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0;
+            padding: 16px;
+            background: rgba(247, 184, 79, 0.1);
+            border: 1px solid rgba(247, 184, 79, 0.2);
+            border-radius: 20px;
+        }
+
+        .prize-icon {
+            font-size: 28px;
+        }
+
+        .prize-text {
+            color: var(--warning);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .contest-stats {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dim);
+            font-size: 13px;
+            margin: 16px 0;
+            padding: 12px 0;
+            border-top: 1px solid rgba(79, 124, 247, 0.15);
+            border-bottom: 1px solid rgba(79, 124, 247, 0.15);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .deadline {
+            color: var(--danger);
+            font-weight: 600;
+            font-size: 13px;
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-footer {
+            padding: 20px 24px;
+            background: rgba(20, 26, 46, 0.6);
+            border-top: 1px solid rgba(79, 124, 247, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-participate {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 8px 16px rgba(79, 124, 247, 0.3);
+        }
+
+        .btn-participate:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(79, 124, 247, 0.4);
+        }
+
+        .btn-participate:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-vote {
+            background: var(--warning);
+            color: #0B0F19;
+        }
+
+        .books-count {
+            color: var(--accent-2);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Seção de livros participantes */
+        .participants-section {
+            margin-top: 48px;
+            background: rgba(14, 19, 36, 0.6);
+            border-radius: 30px;
+            padding: 32px;
+            border: 1px solid rgba(79, 124, 247, 0.15);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .view-all {
+            color: var(--accent-2);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+            padding: 8px 16px;
+            border-radius: 30px;
+            background: rgba(79, 124, 247, 0.1);
+        }
+
+        .view-all:hover {
+            background: rgba(79, 124, 247, 0.2);
+            color: white;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .book-card {
+            background: rgba(20, 26, 46, 0.6);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(79, 124, 247, 0.4);
+        }
+
+        .book-cover {
+            height: 140px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        .book-info {
+            padding: 16px;
+        }
+
+        .book-title {
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+
+        .book-author {
+            color: var(--text-dim);
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .book-votes {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--warning);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .vote-btn {
+            background: rgba(79, 124, 247, 0.2);
+            color: var(--accent-2);
+            border: 1px solid rgba(79, 124, 247, 0.3);
+            padding: 8px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .vote-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Paginação */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 48px 0 24px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(20, 26, 46, 0.6);
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid rgba(79, 124, 247, 0.15);
+        }
+
+        .page-btn:hover {
+            background: rgba(79, 124, 247, 0.2);
+            color: white;
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+            border: none;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.9);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: rgba(14, 19, 36, 0.95);
+            border: 1px solid rgba(79, 124, 247, 0.3);
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow);
+        }
+
+        .modal h2 {
+            color: white;
+            margin-bottom: 16px;
+            font-size: 24px;
+        }
+
+        .modal p {
+            color: var(--text-dim);
+            margin-bottom: 24px;
+        }
+
+        .modal input, .modal select, .modal textarea {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            background: rgba(10, 16, 32, 0.8);
+            border: 1px solid rgba(79, 124, 247, 0.2);
+            border-radius: 16px;
+            font-size: 14px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .modal input:focus, .modal select:focus, .modal textarea:focus {
+            border-color: var(--accent-2);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .modal input::placeholder, .modal textarea::placeholder {
+            color: rgba(159, 177, 217, 0.3);
+        }
+
+        .modal select option {
+            background: var(--bg-2);
+            color: white;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .modal-btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .modal-btn.cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-dim);
+        }
+
+        .modal-btn.cancel:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .modal-btn.confirm {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+            box-shadow: 0 8px 16px rgba(79, 124, 247, 0.3);
+        }
+
+        .modal-btn.confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(79, 124, 247, 0.4);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--success), #34D399);
+            color: white;
+            padding: 16px 28px;
+            border-radius: 60px;
+            box-shadow: 0 10px 30px rgba(47, 181, 122, 0.3);
+            display: none;
+            animation: slideIn 0.3s ease;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                padding: 16px;
+            }
+            
+            .nav-menu {
+                justify-content: center;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .contests-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-section {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .participants-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">NotesNBooks</div>
+            <div class="nav-menu">
+                <a href="#" class="nav-item" onclick="window.location.href='tela_dashbord001.html'">Dashbord</a>
+                <a href="#" class="nav-item" onclick="window.location.href='tela_biblioteca001.html'">Biblioteca</a>
+                <a href="#" class="nav-item active" onclick="window.location.href='tela_concursos001.html'">Concursos</a>
+                <a href="#" class="nav-item" onclick="window.location.href='tela_biblioteca001.html'">Coleções</a>
+            </div>
+            <div class="user-area">
+                <span>Olá, Escritor!</span>
+                <div class="user-avatar">E</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Page Title -->
+            <div class="page-title">
+                <h1>🏆 Concursos Literários</h1>
+                <p>Participe dos concursos, mostre seu talento e ganhe prêmios incríveis! A comunidade vota nos melhores.</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <button class="filter-btn active" onclick="filterContests('all')">Todos</button>
+                <button class="filter-btn" onclick="filterContests('active')">Aceitando inscrições</button>
+                <button class="filter-btn" onclick="filterContests('voting')">Em votação</button>
+                <button class="filter-btn" onclick="filterContests('preparing')">Em breve</button>
+                <button class="filter-btn" onclick="filterContests('completed')">Concluídos</button>
+            </div>
+
+            <!-- Contests Grid -->
+            <div class="contests-grid" id="contestsGrid">
+                <!-- Concurso 1 - Melhor Receita -->
+                <div class="contest-card" data-status="active">
+                    <div class="card-header">
+                        <span class="card-title">👨‍🍳 Concurso de Receitas</span>
+                        <span class="card-badge">Aberto</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="contest-theme">
+                            <h4>Tema</h4>
+                            <p>A Melhor Receita Escrita - Compartilhe sua receita especial com uma história emocionante por trás dela.</p>
+                        </div>
+                        <div class="contest-prize">
+                            <span class="prize-icon">🏆</span>
+                            <span class="prize-text">R$ 1.000 + Publicação em livro</span>
+                        </div>
+                        <div class="contest-stats">
+                            <span class="stat-item">📊 78 participantes</span>
+                            <span class="stat-item">📅 até 15/05/2026</span>
+                        </div>
+                        <div class="deadline">⏰ Faltam 76 dias</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-participate" onclick="openParticipationModal('Concurso de Receitas')">Participar</button>
+                        <span class="books-count">📚 78 livros</span>
+                    </div>
+                </div>
+
+                <!-- Concurso 2 - Dark Romance -->
+                <div class="contest-card" data-status="active">
+                    <div class="card-header">
+                        <span class="card-title">🌑 Dark Romance</span>
+                        <span class="card-badge">18+</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="contest-theme">
+                            <h4>Tema</h4>
+                            <p>Obsesión y Pecado - Histórias de amor proibido, obsessão e redenção com elementos sombrios.</p>
+                        </div>
+                        <div class="contest-prize">
+                            <span class="prize-icon">💰</span>
+                            <span class="prize-text">R$ 2.500 + Contrato de publicação</span>
+                        </div>
+                        <div class="contest-stats">
+                            <span class="stat-item">📊 45 participantes</span>
+                            <span class="stat-item">📅 até 30/06/2026</span>
+                        </div>
+                        <div class="deadline">⏰ Faltam 92 dias</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-participate" onclick="openParticipationModal('Dark Romance')">Participar</button>
+                        <span class="books-count">📚 45 livros</span>
+                    </div>
+                </div>
+
+                <!-- Concurso 3 - Enemies to Lovers -->
+                <div class="contest-card" data-status="voting">
+                    <div class="card-header">
+                        <span class="card-title">❤️ Enemies to Lovers</span>
+                        <span class="card-badge voting">Votação</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="contest-theme">
+                            <h4>Tema</h4>
+                            <p>Do ódio ao amor - Histórias onde rivais se tornam amantes. Conflito, tensão e química irresistível.</p>
+                        </div>
+                        <div class="contest-prize">
+                            <span class="prize-icon">🎁</span>
+                            <span class="prize-text">R$ 800 + Divulgação gratuita</span>
+                        </div>
+                        <div class="contest-stats">
+                            <span class="stat-item">📊 123 participantes</span>
+                            <span class="stat-item">🗳️ 2.5k votos</span>
+                        </div>
+                        <div class="deadline">📢 Resultados até 20/05/2026</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-participate btn-vote" style="background: var(--warning); color: #0B0F19;" onclick="openVotingModal()">Votar</button>
+                        <span class="books-count">📚 123 livros</span>
+                    </div>
+                </div>
+
+                <!-- Concurso 4 - Superação -->
+                <div class="contest-card" data-status="active">
+                    <div class="card-header">
+                        <span class="card-title">💪 Histórias de Superação</span>
+                        <span class="card-badge">Aberto</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="contest-theme">
+                            <h4>Tema</h4>
+                            <p>Relatos reais de vida, momentos que marcaram, lições aprendidas e vitórias conquistadas.</p>
+                        </div>
+                        <div class="contest-prize">
+                            <span class="prize-icon">📚</span>
+                            <span class="prize-text">Publicação em coletânea + 50 cópias</span>
+                        </div>
+                        <div class="contest-stats">
+                            <span class="stat-item">📊 34 participantes</span>
+                            <span class="stat-item">📅 até 10/06/2026</span>
+                        </div>
+                        <div class="deadline">⏰ Faltam 83 dias</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-participate" onclick="openParticipationModal('Superação')">Participar</button>
+                        <span class="books-count">📚 34 livros</span>
+                    </div>
+                </div>
+
+                <!-- Concurso 5 - Cartas de Amor -->
+                <div class="contest-card" data-status="active">
+                    <div class="card-header">
+                        <span class="card-title">💌 Notas de Amor</span>
+                        <span class="card-badge">Aberto</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="contest-theme">
+                            <h4>Tema</h4>
+                            <p>Cartas, poemas e declarações de amor verdadeiras ou fictícias. O poder das palavras para tocar corações.</p>
+                        </div>
+                        <div class="contest-prize">
+                            <span class="prize-icon">💐</span>
+                            <span class="prize-text">R$ 500 + Kit de livros</span>
+                        </div>
+                        <div class="contest-stats">
+                            <span class="stat-item">📊 56 participantes</span>
+                            <span class="stat-item">📅 até 25/05/2026</span>
+                        </div>
+                        <div class="deadline">⏰ Faltam 67 dias</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-participate" onclick="openParticipationModal('Notas de Amor')">Participar</button>
+                        <span class="books-count">📚 56 livros</span>
+                    </div>
+                </div>
+
+                <!-- Concurso 6 - College Romance -->
+                <div class="contest-card" data-status="preparing">
+                    <div class="card-header">
+                        <span class="card-title">🎓 College Romance</span>
+                        <span class="card-badge preparing">Em breve</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="contest-theme">
+                            <h4>Tema</h4>
+                            <p>Amor nos Campus - Romances que se passam em universidades, primeiros amores, descobertas e amizades.</p>
+                        </div>
+                        <div class="contest-prize">
+                            <span class="prize-icon">🎯</span>
+                            <span class="prize-text">R$ 1.200 + Divulgação</span>
+                        </div>
+                        <div class="contest-stats">
+                            <span class="stat-item">📊 Em breve</span>
+                            <span class="stat-item">📅 Início: 01/06/2026</span>
+                        </div>
+                        <div class="deadline">🔜 Em preparação</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-participate" style="background: var(--muted-2);" disabled>Em breve</button>
+                        <span class="books-count">📚 0 livros</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Livros Participantes -->
+            <div class="participants-section">
+                <div class="section-header">
+                    <h2>📖 Participantes - Enemies to Lovers</h2>
+                    <a href="#" class="view-all">Ver todos →</a>
+                </div>
+                <div class="books-grid" id="booksGrid"></div>
+            </div>
+
+            <!-- Paginação -->
+            <div class="pagination">
+                <a href="#" class="page-btn">1</a>
+                <a href="#" class="page-btn active">2</a>
+                <a href="#" class="page-btn">3</a>
+                <a href="#" class="page-btn">4</a>
+                <a href="#" class="page-btn">5</a>
+                <a href="#" class="page-btn">...</a>
+                <a href="#" class="page-btn">45</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Participação -->
+    <div class="modal" id="participationModal">
+        <div class="modal-content">
+            <h2>Participar do Concurso</h2>
+            <p>Concurso: <span id="contestName"></span></p>
+            <input type="text" placeholder="Título do seu livro/receita" id="bookTitle">
+            <select id="bookType">
+                <option value="">Selecione o tipo</option>
+                <option value="romance">Romance</option>
+                <option value="receita">Receita</option>
+                <option value="relato">Relato de vida</option>
+                <option value="poema">Poema/Carta</option>
+            </select>
+            <textarea placeholder="Sinopse/Descrição (máx. 500 caracteres)" rows="4" id="synopsis"></textarea>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeModal()">Cancelar</button>
+                <button class="modal-btn confirm" onclick="confirmParticipation()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Votação -->
+    <div class="modal" id="votingModal">
+        <div class="modal-content">
+            <h2>Votar no Concurso</h2>
+            <p>Escolha seu livro favorito em "Enemies to Lovers"</p>
+            <select id="voteSelection" style="margin-bottom: 20px;">
+                <option value="">Selecione um livro</option>
+                <option value="1">"Amor e Ódio" - Maria S.</option>
+                <option value="2">"Rivais" - João P.</option>
+                <option value="3">"Inimigos Íntimos" - Ana C.</option>
+                <option value="4">"Do Ódio ao Amor" - Carla M.</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeVotingModal()">Cancelar</button>
+                <button class="modal-btn confirm" onclick="confirmVote()">Votar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de notificação -->
+    <div class="toast" id="toast">Participação confirmada com sucesso!</div>
+
+    <script>
+        const participantsBooks = [
+            { title: "Amor e Ódio", author: "Maria S.", votes: 234, cover: "❤️" },
+            { title: "Rivais", author: "João P.", votes: 189, cover: "⚔️" },
+            { title: "Inimigos Íntimos", author: "Ana C.", votes: 156, cover: "🔥" },
+            { title: "Do Ódio ao Amor", author: "Carla M.", votes: 98, cover: "💕" },
+            { title: "Oposição", author: "Pedro L.", votes: 87, cover: "🎭" },
+            { title: "Amor Impossível", author: "Luísa F.", votes: 76, cover: "💔" },
+            { title: "Rivalidade", author: "Marcos T.", votes: 65, cover: "⚡" },
+            { title: "Corações Rivais", author: "Bianca R.", votes: 54, cover: "💘" }
+        ];
+
+        function loadBooks() {
+            const booksGrid = document.getElementById('booksGrid');
+            booksGrid.innerHTML = participantsBooks.map(book => `
+                <div class="book-card">
+                    <div class="book-cover">${book.cover}</div>
+                    <div class="book-info">
+                        <div class="book-title">"${book.title}"</div>
+                        <div class="book-author">por ${book.author}</div>
+                        <div class="book-votes">
+                            <span>⭐</span> ${book.votes} votos
+                        </div>
+                        <button class="vote-btn" onclick="quickVote('${book.title}')">Votar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        loadBooks();
+
+        function filterContests(status) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.contest-card');
+            cards.forEach(card => {
+                if (status === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = card.dataset.status === status ? 'block' : 'none';
+                }
+            });
+        }
+
+        function openParticipationModal(contestName) {
+            document.getElementById('contestName').textContent = contestName;
+            document.getElementById('participationModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('participationModal').style.display = 'none';
+        }
+
+        function confirmParticipation() {
+            const title = document.getElementById('bookTitle').value;
+            const type = document.getElementById('bookType').value;
+            const synopsis = document.getElementById('synopsis').value;
+
+            if (!title || !type || !synopsis) {
+                alert('Por favor, preencha todos os campos!');
+                return;
+            }
+
+            closeModal();
+            showToast('📝 Participação confirmada! Boa sorte no concurso!');
+            
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('bookType').value = '';
+            document.getElementById('synopsis').value = '';
+        }
+
+        function openVotingModal() {
+            document.getElementById('votingModal').style.display = 'flex';
+        }
+
+        function closeVotingModal() {
+            document.getElementById('votingModal').style.display = 'none';
+        }
+
+        function confirmVote() {
+            const vote = document.getElementById('voteSelection').value;
+            if (!vote) {
+                alert('Selecione um livro para votar!');
+                return;
+            }
+            closeVotingModal();
+            showToast('✅ Voto confirmado! Obrigado por participar!');
+        }
+
+        function quickVote(bookTitle) {
+            showToast(`✅ Você votou em "${bookTitle}"!`);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        window.onclick = function(event) {
+            const participationModal = document.getElementById('participationModal');
+            const votingModal = document.getElementById('votingModal');
+            if (event.target === participationModal) {
+                participationModal.style.display = 'none';
+            }
+            if (event.target === votingModal) {
+                votingModal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

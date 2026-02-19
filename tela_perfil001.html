@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotesNBooks — Meu Perfil</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-0: #0B0F19;
+            --bg-1: #111627;
+            --bg-2: #0F1424;
+            --bg-3: #141A2E;
+            --panel: #0E1324;
+            --muted: #1E2743;
+            --muted-2: #2A3560;
+            --text: #E6ECFA;
+            --text-dim: #9FB1D9;
+            --accent: #4F7CF7;
+            --accent-2: #00D4FF;
+            --accent-purple: #9D7CF7;
+            --success: #2FB57A;
+            --warning: #F7B84F;
+            --danger: #EF4444;
+            --radius: 24px;
+            --radius-sm: 16px;
+            --shadow: 0 18px 30px rgba(0,0,0,.45);
+        }
+
+        * { 
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system, sans-serif;
+            background: radial-gradient(1200px 800px at 20% 10%, #0F162C 0%, var(--bg-0) 45%) fixed;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(14, 19, 36, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(15, 22, 44, 0.8);
+            border-bottom: 1px solid rgba(79, 124, 247, 0.22);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            background: rgba(18, 23, 43, 0.6);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #DDE6FB;
+            font-weight: 500;
+            padding: 8px 24px;
+            border-radius: 40px;
+            transition: all 0.3s;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(79, 124, 247, 0.15);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(180deg, #172042, #151C36);
+            box-shadow: 0 4px 12px rgba(79, 124, 247, 0.25);
+            color: #EAF0FF;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: var(--text-dim);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-2);
+        }
+
+        .breadcrumb span {
+            color: white;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 32px;
+            background: rgba(20, 26, 46, 0.6);
+            border-radius: 30px;
+            padding: 32px;
+            border: 1px solid rgba(79, 124, 247, 0.15);
+        }
+
+        .profile-avatar {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .avatar-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(79, 124, 247, 0.3);
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 3px solid var(--bg-2);
+            transition: 0.3s;
+        }
+
+        .avatar-upload:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 3px rgba(79, 124, 247, 0.3);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .profile-email {
+            color: var(--text-dim);
+            font-size: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-badge {
+            background: rgba(79, 124, 247, 0.2);
+            border: 1px solid rgba(79, 124, 247, 0.3);
+            color: var(--accent-2);
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 32px;
+            margin-top: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Profile Content Grid */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Cards */
+        .profile-card {
+            background: rgba(20, 26, 46, 0.6);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 30px;
+            padding: 24px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title span {
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Formulários */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(10, 16, 32, 0.8);
+            border: 1px solid rgba(79, 124, 247, 0.2);
+            border-radius: 16px;
+            padding: 14px 18px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-2);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: rgba(159, 177, 217, 0.3);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 40px;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+            box-shadow: 0 8px 16px rgba(79, 124, 247, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(79, 124, 247, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-dim);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Atividade Recente */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(79, 124, 247, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-title {
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .activity-meta {
+            color: var(--text-dim);
+            font-size: 12px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .activity-time {
+            color: var(--accent-2);
+            font-size: 11px;
+        }
+
+        /* Dispositivos */
+        .device-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .device-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .device-info {
+            flex: 1;
+        }
+
+        .device-name {
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .device-details {
+            color: var(--text-dim);
+            font-size: 11px;
+        }
+
+        .device-current {
+            background: rgba(47, 181, 122, 0.15);
+            color: var(--success);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Abas de navegação interna */
+        .profile-tabs {
+            display: flex;
+            gap: 4px;
+            background: rgba(18, 23, 43, 0.6);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+
+        .profile-tab {
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--text-dim);
+        }
+
+        .profile-tab:hover {
+            background: rgba(79, 124, 247, 0.15);
+            color: white;
+        }
+
+        .profile-tab.active {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+        }
+
+        /* Alertas */
+        .alert {
+            background: rgba(247, 184, 79, 0.1);
+            border: 1px solid rgba(247, 184, 79, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--warning);
+        }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-stats {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">📘 NotesNBooks</div>
+            <div class="nav-menu">
+                <button class="nav-item">Biblioteca</button>
+                <button class="nav-item">Concursos</button>
+                <button class="nav-item">Comunidade</button>
+                <button class="nav-item active">Perfil</button>
+            </div>
+            <div class="user-area" style="width: 40px;"></div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Breadcrumb -->
+            <div class="breadcrumb">
+                <a href="#">Início</a> › <a href="#">Usuário</a> › <span>Meu Perfil</span>
+            </div>
+
+            <!-- Profile Tabs -->
+            <div class="profile-tabs">
+                <span class="profile-tab active">👤 Perfil</span>
+                <span class="profile-tab">📊 Estatísticas</span>
+                <span class="profile-tab">🔒 Segurança</span>
+                <span class="profile-tab">⚙️ Configurações</span>
+                <span class="profile-tab">📱 Dispositivos</span>
+            </div>
+
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <div class="avatar-image">👩</div>
+                    <div class="avatar-upload" title="Alterar foto">📷</div>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name">Maria Silva</div>
+                    <div class="profile-email">
+                        maria.silva@email.com
+                        <span class="profile-badge">VERIFICADO</span>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Cadernos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">156</div>
+                            <div class="stat-label">Páginas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Publicações</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Concursos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Grid -->
+            <div class="profile-grid">
+                <!-- Coluna Esquerda -->
+                <div class="profile-card">
+                    <div class="card-title">
+                        <span></span> Informações Pessoais
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Nome completo</label>
+                        <input type="text" class="form-input" value="Maria Silva" placeholder="Seu nome">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" value="maria.silva@email.com" placeholder="seu@email.com">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Data de nascimento</label>
+                            <input type="date" class="form-input" value="1995-05-15">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Gênero</label>
+                            <select class="form-input">
+                                <option>Feminino</option>
+                                <option>Masculino</option>
+                                <option>Outro</option>
+                                <option>Prefiro não dizer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Bio</label>
+                        <textarea class="form-input" rows="3" placeholder="Conte um pouco sobre você...">Escritora nas horas vagas, apaixonada por romance e poesia. Participando do concurso Enemies to Lovers com meu livro "Amor em Veneza".</textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button class="btn btn-outline">Cancelar</button>
+                        <button class="btn btn-primary">Salvar alterações</button>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita -->
+                <div class="profile-card">
+                    <div class="card-title">
+                        <span></span> Alterar Senha
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Senha atual</label>
+                        <input type="password" class="form-input" placeholder="••••••••">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Nova senha</label>
+                        <input type="password" class="form-input" placeholder="••••••••">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Confirmar nova senha</label>
+                        <input type="password" class="form-input" placeholder="••••••••">
+                    </div>
+
+                    <div class="alert">
+                        <span>🔐</span> Use pelo menos 8 caracteres com letras, números e símbolos
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button class="btn btn-primary">Atualizar senha</button>
+                    </div>
+                </div>
+
+                <!-- Atividade Recente (ocupa linha inteira) -->
+                <div class="profile-card" style="grid-column: 1 / -1;">
+                    <div class="card-title">
+                        <span></span> Atividade Recente
+                    </div>
+
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <div class="activity-icon">📝</div>
+                            <div class="activity-info">
+                                <div class="activity-title">Você publicou "Amor em Veneza"</div>
+                                <div class="activity-meta">
+                                    <span>❤️ 234 curtidas</span>
+                                    <span>💬 45 comentários</span>
+                                </div>
+                            </div>
+                            <div class="activity-time">Há 2 dias</div>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-icon">🏆</div>
+                            <div class="activity-info">
+                                <div class="activity-title">Inscrição no concurso "Enemies to Lovers"</div>
+                                <div class="activity-meta">
+                                    <span>📊 123 participantes</span>
+                                </div>
+                            </div>
+                            <div class="activity-time">Há 5 dias</div>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-icon">📖</div>
+                            <div class="activity-info">
+                                <div class="activity-title">Você leu "Sombras da Noite" até a página 156</div>
+                                <div class="activity-meta">
+                                    <span>⏱️ 45 minutos de leitura</span>
+                                </div>
+                            </div>
+                            <div class="activity-time">Há 1 semana</div>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-icon">⭐</div>
+                            <div class="activity-info">
+                                <div class="activity-title">Você avaliou "Receitas da Vó" com 5 estrelas</div>
+                                <div class="activity-meta">
+                                    <span>📚 Livro de receitas</span>
+                                </div>
+                            </div>
+                            <div class="activity-time">Há 1 semana</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Dispositivos Conectados -->
+                <div class="profile-card" style="grid-column: 1 / -1;">
+                    <div class="card-title">
+                        <span></span> Dispositivos Conectados
+                    </div>
+
+                    <div class="device-item">
+                        <div class="device-icon">💻</div>
+                        <div class="device-info">
+                            <div class="device-name">
+                                MacBook Pro - São Paulo
+                                <span class="device-current">ATUAL</span>
+                            </div>
+                            <div class="device-details">Chrome • Último acesso: agora mesmo</div>
+                        </div>
+                        <button class="btn btn-outline" style="padding: 6px 16px;">Desconectar</button>
+                    </div>
+
+                    <div class="device-item">
+                        <div class="device-icon">📱</div>
+                        <div class="device-info">
+                            <div class="device-name">iPhone 14 - Rio de Janeiro</div>
+                            <div class="device-details">Safari • Último acesso: há 2 dias</div>
+                        </div>
+                        <button class="btn btn-outline" style="padding: 6px 16px;">Desconectar</button>
+                    </div>
+
+                    <div class="device-item">
+                        <div class="device-icon">📱</div>
+                        <div class="device-info">
+                            <div class="device-name">iPad - Lisboa</div>
+                            <div class="device-details">Safari • Último acesso: há 5 dias</div>
+                        </div>
+                        <button class="btn btn-outline" style="padding: 6px 16px;">Desconectar</button>
+                    </div>
+
+                    <div style="margin-top: 16px; display: flex; gap: 12px;">
+                        <button class="btn btn-outline">Desconectar todos os dispositivos</button>
+                    </div>
+                </div>
+
+                <!-- Zona de Perigo (Admin/Usuário) -->
+                <div class="profile-card" style="grid-column: 1 / -1; border-color: rgba(239, 68, 68, 0.3);">
+                    <div class="card-title" style="color: var(--danger);">
+                        <span style="background: var(--danger);"></span> Zona de Perigo
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                        <div>
+                            <div style="color: white; font-weight: 600; margin-bottom: 4px;">Excluir minha conta</div>
+                            <div style="color: var(--text-dim); font-size: 13px;">Esta ação é irreversível e todos os seus dados serão perdidos.</div>
+                        </div>
+                        <button class="btn btn-danger">Excluir conta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amor em Veneza — NotesNBooks</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-0: #0B0F19;
+            --bg-1: #111627;
+            --bg-2: #0F1424;
+            --bg-3: #141A2E;
+            --panel: #0E1324;
+            --muted: #1E2743;
+            --muted-2: #2A3560;
+            --text: #E6ECFA;
+            --text-dim: #9FB1D9;
+            --accent: #4F7CF7;
+            --accent-2: #00D4FF;
+            --accent-purple: #9D7CF7;
+            --success: #2FB57A;
+            --warning: #F7B84F;
+            --danger: #EF4444;
+            --radius: 24px;
+            --radius-sm: 16px;
+            --shadow: 0 18px 30px rgba(0,0,0,.45);
+        }
+
+        * { 
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system, sans-serif;
+            background: radial-gradient(1200px 800px at 20% 10%, #0F162C 0%, var(--bg-0) 45%) fixed;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(14, 19, 36, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            padding: 32px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            color: var(--accent-2);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Book Hero */
+        .book-hero {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .book-cover-large {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent-purple));
+            border-radius: 30px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-cover-large::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1));
+            pointer-events: none;
+        }
+
+        .book-info-large h1 {
+            font-size: 42px;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .book-author-large {
+            font-size: 18px;
+            color: var(--accent-2);
+            margin-bottom: 16px;
+        }
+
+        .book-meta-large {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dim);
+        }
+
+        .rating-large {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stars {
+            color: var(--warning);
+            font-size: 20px;
+        }
+
+        .rating-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .rating-count {
+            color: var(--text-dim);
+        }
+
+        .book-description {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+
+        .read-btn {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(79, 124, 247, 0.3);
+        }
+
+        .read-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(79, 124, 247, 0.4);
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            margin-top: 48px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .reviews-summary {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 40px;
+            background: rgba(20, 26, 46, 0.6);
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .average-rating {
+            text-align: center;
+        }
+
+        .average-number {
+            font-size: 64px;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+        }
+
+        .average-stars {
+            color: var(--warning);
+            font-size: 24px;
+            margin: 8px 0;
+        }
+
+        .total-reviews {
+            color: var(--text-dim);
+        }
+
+        .rating-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .rating-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bar-label {
+            width: 40px;
+            color: var(--text-dim);
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-2), var(--accent));
+            border-radius: 10px;
+        }
+
+        .bar-percent {
+            width: 40px;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        /* Comments */
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .comment-card {
+            background: rgba(20, 26, 46, 0.6);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 24px;
+            padding: 24px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .comment-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .comment-name {
+            color: white;
+            font-weight: 600;
+        }
+
+        .comment-date {
+            color: var(--text-dim);
+            font-size: 12px;
+        }
+
+        .comment-rating {
+            color: var(--warning);
+        }
+
+        .comment-text {
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 16px;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        .comment-actions span {
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .comment-actions span:hover {
+            color: var(--accent-2);
+        }
+
+        .add-review {
+            background: rgba(20, 26, 46, 0.6);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 24px;
+            padding: 24px;
+            margin-top: 30px;
+        }
+
+        .add-review h3 {
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .review-input {
+            width: 100%;
+            background: rgba(10, 16, 32, 0.8);
+            border: 1px solid rgba(79, 124, 247, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            color: white;
+            margin-bottom: 16px;
+            resize: none;
+        }
+
+        .submit-review {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="back-btn" onclick="window.location.href='tela_biblioteca001.html'">
+                <span>←</span> Voltar para Biblioteca
+            </div>
+            <div class="logo">NotesNBooks</div>
+        </div>
+
+        <div class="book-hero">
+            <div class="book-cover-large">❤️</div>
+            <div class="book-info-large">
+                <h1>Amor em Veneza</h1>
+                <div class="book-author-large">por Maria Silva</div>
+                
+                <div class="book-meta-large">
+                    <span class="meta-item">📖 Romance</span>
+                    <span class="meta-item">📅 2026</span>
+                    <span class="meta-item">🔞 14+</span>
+                </div>
+
+                <div class="rating-large">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-value">4.9</span>
+                    <span class="rating-count">(2.345 avaliações)</span>
+                </div>
+
+                <p class="book-description">
+                    Em uma Veneza envolta em mistério e romance, duas almas se encontram entre canais e pontes seculares. 
+                    Uma história de amor que atravessa o tempo, repleta de paixão, segredos e reviravoltas. 
+                    Prepare-se para se apaixonar por Lorenzo e Sofia em uma jornada inesquecível pela cidade mais romântica do mundo.
+                </p>
+
+                <button class="read-btn" onclick="window.location.href='tela_leituralivro.html'">📖 Começar a Leitura</button>
+            </div>
+        </div>
+
+        <div class="reviews-section">
+            <h2 class="section-title">Avaliações da comunidade</h2>
+            
+            <div class="reviews-summary">
+                <div class="average-rating">
+                    <div class="average-number">4.9</div>
+                    <div class="average-stars">★★★★★</div>
+                    <div class="total-reviews">2.345 avaliações</div>
+                </div>
+                <div class="rating-bars">
+                    <div class="rating-bar-item">
+                        <span class="bar-label">5★</span>
+                        <div class="bar-container"><div class="bar-fill" style="width: 85%"></div></div>
+                        <span class="bar-percent">85%</span>
+                    </div>
+                    <div class="rating-bar-item">
+                        <span class="bar-label">4★</span>
+                        <div class="bar-container"><div class="bar-fill" style="width: 10%"></div></div>
+                        <span class="bar-percent">10%</span>
+                    </div>
+                    <div class="rating-bar-item">
+                        <span class="bar-label">3★</span>
+                        <div class="bar-container"><div class="bar-fill" style="width: 3%"></div></div>
+                        <span class="bar-percent">3%</span>
+                    </div>
+                    <div class="rating-bar-item">
+                        <span class="bar-label">2★</span>
+                        <div class="bar-container"><div class="bar-fill" style="width: 1%"></div></div>
+                        <span class="bar-percent">1%</span>
+                    </div>
+                    <div class="rating-bar-item">
+                        <span class="bar-label">1★</span>
+                        <div class="bar-container"><div class="bar-fill" style="width: 1%"></div></div>
+                        <span class="bar-percent">1%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comments-list">
+                <!-- Comentário 1 -->
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-user">
+                            <div class="comment-avatar">A</div>
+                            <div>
+                                <div class="comment-name">Ana Rodrigues</div>
+                                <div class="comment-date">Há 2 dias</div>
+                            </div>
+                        </div>
+                        <div class="comment-rating">★★★★★</div>
+                    </div>
+                    <p class="comment-text">Simplesmente lindo! A forma como a autora descreve Veneza me fez sentir dentro da história. O casal tem uma química incrível e o final me surpreendeu. Recomendo demais!</p>
+                    <div class="comment-actions">
+                        <span>❤️ 234</span>
+                        <span>💬 Responder</span>
+                    </div>
+                </div>
+
+                <!-- Comentário 2 -->
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <div class="comment-user">
+                            <div class="comment-avatar">P</div>
+                            <div>
+                                <div class="comment-name">Pedro Santos</div>
+                                <div class="comment-date">Há 5 dias</div>
+                            </div>
+                        </div>
+                        <div class="comment-rating">★★★★☆</div>
+                    </div>
+                    <p class="comment-text">História muito envolvente, li em uma noite! Senti que o meio do livro deu uma pequena arrastada, mas o final compensou. A escrita da Maria é muito fluida.</p>
+                    <div class="comment-actions">
+                        <span>❤️ 89</span>
+                        <span>💬 Responder</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="add-review">
+                <h3>Deixe sua avaliação</h3>
+                <textarea class="review-input" rows="3" placeholder="O que você achou do livro?"></textarea>
+                <button class="submit-review">Publicar avaliação</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotesNBooks — Biblioteca</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-0: #0B0F19;
+            --bg-1: #111627;
+            --bg-2: #0F1424;
+            --bg-3: #141A2E;
+            --panel: #0E1324;
+            --muted: #1E2743;
+            --muted-2: #2A3560;
+            --text: #E6ECFA;
+            --text-dim: #9FB1D9;
+            --accent: #4F7CF7;
+            --accent-2: #00D4FF;
+            --accent-purple: #9D7CF7;
+            --success: #2FB57A;
+            --warning: #F7B84F;
+            --danger: #EF4444;
+            --radius: 24px;
+            --radius-sm: 16px;
+            --shadow: 0 18px 30px rgba(0,0,0,.45);
+        }
+
+        * { 
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system, sans-serif;
+            background: radial-gradient(1200px 800px at 20% 10%, #0F162C 0%, var(--bg-0) 45%) fixed;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(14, 19, 36, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(15, 22, 44, 0.8);
+            border-bottom: 1px solid rgba(79, 124, 247, 0.22);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            background: rgba(18, 23, 43, 0.6);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #DDE6FB;
+            font-weight: 500;
+            padding: 8px 24px;
+            border-radius: 40px;
+            transition: all 0.3s;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: rgba(79, 124, 247, 0.15);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(180deg, #172042, #151C36);
+            box-shadow: 0 4px 12px rgba(79, 124, 247, 0.25);
+            color: #EAF0FF;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 32px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(79, 124, 247, 0.2), rgba(157, 124, 247, 0.2));
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(79, 124, 247, 0.3);
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            color: var(--text-dim);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Search and Filters */
+        .search-section {
+            margin-bottom: 32px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(10, 16, 32, 0.8);
+            border: 1px solid rgba(79, 124, 247, 0.2);
+            border-radius: 60px;
+            padding: 12px 24px;
+        }
+
+        .search-input input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-input input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .filter-btn {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(79, 124, 247, 0.3);
+        }
+
+        .categories {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .category-tag {
+            padding: 8px 20px;
+            border-radius: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-dim);
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .category-tag:hover,
+        .category-tag.active {
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Books Grid */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0 24px;
+        }
+
+        .section-title h2 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .section-link {
+            color: var(--accent-2);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 24px;
+        }
+
+        .book-card {
+            background: rgba(20, 26, 46, 0.6);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-2);
+            box-shadow: 0 20px 30px rgba(79, 124, 247, 0.2);
+        }
+
+        .book-cover {
+            height: 250px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .book-rating {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            color: var(--warning);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .book-info {
+            padding: 20px;
+        }
+
+        .book-title {
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+            font-size: 16px;
+        }
+
+        .book-author {
+            color: var(--text-dim);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-dim);
+            font-size: 12px;
+        }
+
+        /* Trending Section */
+        .trending-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .trending-card {
+            background: rgba(20, 26, 46, 0.6);
+            border: 1px solid rgba(79, 124, 247, 0.15);
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .trending-position {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .trending-info {
+            flex: 1;
+        }
+
+        .trending-title {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .trending-stats {
+            color: var(--warning);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-title {
+                font-size: 32px;
+            }
+            .trending-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255,255,255,0.05);
+            padding: 8px 16px 8px 8px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .admin-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .admin-info {
+            line-height: 1.4;
+        }
+        .admin-info strong {
+            color: white;
+            font-size: 14px;
+        }
+        .admin-info span {
+            color: var(--text-dim);
+            font-size: 11px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">NotesNBooks</div>
+            <div class="nav-menu">
+                <div class="nav-item" onclick="window.location.href='tela_dashbord001.html'">Dashbord</div>
+                <div class="nav-item active" onclick="window.location.href='tela_biblioteca001.html'">Biblioteca</div>
+                <div class="nav-item" onclick="window.location.href='tela_concursos001.html'">Concursos</div>
+                <div class="nav-item">Minha Estante</div>
+            </div>
+            <div class="admin-user">
+                <div class="admin-avatar">D</div>
+                <div class="admin-info">
+                    <strong>Dev Admin</strong>
+                    <span>admin@notesnbooks.com</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Hero -->
+            <div class="hero-section">
+                <h1 class="hero-title">Biblioteca NotesNBooks</h1>
+                <p class="hero-subtitle">Descubra milhares de histórias, receitas e poemas escritos pela nossa comunidade</p>
+            </div>
+
+            <!-- Search -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <div class="search-input">
+                        <span>🔍</span>
+                        <input type="text" placeholder="Buscar livros, autores, gêneros...">
+                    </div>
+                    <button class="filter-btn">Filtrar</button>
+                </div>
+                <div class="categories">
+                    <span class="category-tag active">Todos</span>
+                    <span class="category-tag">Romance</span>
+                    <span class="category-tag">Fantasia</span>
+                    <span class="category-tag">Terror</span>
+                    <span class="category-tag">Poesia</span>
+                    <span class="category-tag">Receitas</span>
+                    <span class="category-tag">Relatos</span>
+                    <span class="category-tag">Ficção</span>
+                </div>
+            </div>
+
+            <!-- Trending -->
+            <div class="section-title">
+                <h2>🔥 Tendências da semana</h2>
+                <span class="section-link">Ver todos →</span>
+            </div>
+            <div class="trending-grid">
+                <div class="trending-card">
+                    <div class="trending-position">1</div>
+                    <div class="trending-info">
+                        <div class="trending-title">Amor em Veneza</div>
+                        <div class="trending-stats">⭐ 4.8 (2.3k avaliações)</div>
+                    </div>
+                </div>
+                <div class="trending-card">
+                    <div class="trending-position">2</div>
+                    <div class="trending-info">
+                        <div class="trending-title">Sombras da Noite</div>
+                        <div class="trending-stats">⭐ 4.7 (1.8k avaliações)</div>
+                    </div>
+                </div>
+                <div class="trending-card">
+                    <div class="trending-position">3</div>
+                    <div class="trending-info">
+                        <div class="trending-title">Receitas da Vó</div>
+                        <div class="trending-stats">⭐ 4.9 (1.5k avaliações)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mais Avaliados -->
+            <div class="section-title">
+                <h2>⭐ Mais avaliados</h2>
+                <span class="section-link">Ver todos →</span>
+            </div>
+            <div class="books-grid">
+                <!-- Livro 1 -->
+                <div class="book-card" onclick="window.location.href='livro.html?id=1'">
+                    <div class="book-cover">
+                        ❤️
+                        <span class="book-rating">⭐ 4.9</span>
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Amor em Veneza</div>
+                        <div class="book-author">Maria Silva</div>
+                        <div class="book-meta">
+                            <span>❤️ 2.3k</span>
+                            <span>📖 Romance</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Livro 2 -->
+                <div class="book-card" onclick="window.location.href='livro.html?id=2'">
+                    <div class="book-cover">
+                        🌑
+                        <span class="book-rating">⭐ 4.8</span>
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Sombras da Noite</div>
+                        <div class="book-author">Ana Costa</div>
+                        <div class="book-meta">
+                            <span>❤️ 1.8k</span>
+                            <span>📖 Terror</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Livro 3 -->
+                <div class="book-card" onclick="window.location.href='livro.html?id=3'">
+                    <div class="book-cover">
+                        🍳
+                        <span class="book-rating">⭐ 4.9</span>
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Receitas da Vó</div>
+                        <div class="book-author">João Pedro</div>
+                        <div class="book-meta">
+                            <span>❤️ 1.5k</span>
+                            <span>📖 Receitas</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Livro 4 -->
+                <div class="book-card" onclick="window.location.href='livro.html?id=4'">
+                    <div class="book-cover">
+                        💔
+                        <span class="book-rating">⭐ 4.7</span>
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Poemas Tristes</div>
+                        <div class="book-author">Carla Mendes</div>
+                        <div class="book-meta">
+                            <span>❤️ 1.2k</span>
+                            <span>📖 Poesia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menos Avaliados (Precisa de amor) -->
+            <div class="section-title">
+                <h2>💔 Precisa de amor</h2>
+                <span class="section-link">Ver todos →</span>
+            </div>
+            <div class="books-grid">
+                <!-- Livro 5 -->
+                <div class="book-card" onclick="window.location.href='livro.html?id=5'">
+                    <div class="book-cover">
+                        📖
+                        <span class="book-rating">⭐ 2.3</span>
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Primeiras Palavras</div>
+                        <div class="book-author">Luís F.</div>
+                        <div class="book-meta">
+                            <span>❤️ 23</span>
+                            <span>📖 Estreia</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Livro 6 -->
+                <div class="book-card" onclick="window.location.href='livro.html?id=6'">
+                    <div class="book-cover">
+                        ✍️
+                        <span class="book-rating">⭐ 2.1</span>
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">Meu Diário</div>
+                        <div class="book-author">Anônimo</div>
+                        <div class="book-meta">
+                            <span>❤️ 15</span>
+                            <span>📖 Relato</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

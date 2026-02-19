@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NotesNBooks — Editor de Escrita</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-0: #0B0F19;
+      --bg-1: #111627;
+      --bg-2: #0F1424;
+      --bg-3: #141A2E;
+      --panel: #0E1324;
+      --muted: #1E2743;
+      --muted-2: #2A3560;
+      --text: #E6ECFA;
+      --text-dim: #9FB1D9;
+      --accent: #4F7CF7;
+      --accent-2: #00D4FF;
+      --accent-purple: #9D7CF7;
+      --success: #2FB57A;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 12px 24px rgba(0,0,0,.45);
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 20% 10%, #0F162C 0%, var(--bg-0) 45%) fixed;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 48px 1fr 36px;
+      grid-template-columns: 48px 240px 1fr;
+      grid-template-areas:
+        "topbar topbar topbar"
+        "sidebar tools main"
+        "bottombar bottombar bottombar";
+    }
+
+    /* Top Navigation Bar - mais compacta */
+    .topbar {
+      grid-area: topbar;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      background: linear-gradient(180deg, var(--bg-1), #0D1324);
+      border-bottom: 1px solid rgba(79,124,247,.22);
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 14px;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+    }
+
+    .tabs {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: rgba(18,23,43,0.6);
+      padding: 2px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.04);
+    }
+    .tab {
+      color: #DDE6FB;
+      background: transparent;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: linear-gradient(180deg, #172042, #151C36);
+      box-shadow: 0 2px 8px rgba(79,124,247,.25);
+      color: #EAF0FF;
+    }
+
+    .spacer { flex: 1; }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: #12172B;
+      border: 1px solid rgba(255,255,255,.06);
+      min-width: 200px;
+    }
+    .search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 12px;
+    }
+    .search input::placeholder { color: var(--text-dim); }
+
+    .profile {
+      width: 28px; 
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      border: 1px solid rgba(255,255,255,.2);
+    }
+
+    /* Sidebar (left) - mais compacta e sem ícones */
+    .sidebar {
+      grid-area: sidebar;
+      background: linear-gradient(180deg, var(--bg-2), #0D1426 100%);
+      border-right: 1px solid rgba(79,124,247,.14);
+      padding: 12px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .side-btn {
+      width: 32px; 
+      height: 32px;
+      border-radius: 8px;
+      background: #141C33;
+      border: 1px solid rgba(255,255,255,.08);
+      cursor: pointer;
+      transition: .18s ease;
+    }
+    .side-btn:hover { 
+      background: #162043; 
+    }
+
+    .side-sections {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+    .side-card {
+      width: 100%;
+      height: 40px;
+      border-radius: 8px;
+      background: #141B33;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    /* Tools Panel - mais compacto */
+    .tools-panel {
+      grid-area: tools;
+      background: linear-gradient(180deg, #0D1324, #0A1020);
+      border-right: 1px solid rgba(79,124,247,.14);
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+    }
+
+    .tools-section {
+      background: rgba(20,26,46,0.6);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      border: 1px solid rgba(79,124,247,.1);
+    }
+
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    /* Ferramentas de Escrita - grid mais compacto */
+    .writing-tools {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .tool-btn {
+      background: #141C33;
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 6px;
+      padding: 6px 2px;
+      color: var(--text);
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .tool-btn span { font-size: 14px; }
+    .tool-btn small { font-size: 8px; }
+
+    .tool-row {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .tool-chip {
+      background: #1A2342;
+      border-radius: 12px;
+      padding: 4px 8px;
+      font-size: 10px;
+      color: var(--text-dim);
+      cursor: pointer;
+    }
+
+    /* Cores - mais compactas */
+    .color-palette {
+      display: flex;
+      gap: 4px;
+      margin: 8px 0;
+      flex-wrap: wrap;
+    }
+    .color-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .color-dot.selected { border-color: var(--accent-2); }
+
+    /* Área da IA - mais compacta */
+    .ia-section {
+      background: linear-gradient(135deg, rgba(79,124,247,.1), rgba(157,124,247,.1));
+      border-radius: var(--radius-sm);
+      padding: 12px;
+    }
+
+    .ia-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .ia-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .ia-title { font-size: 12px; font-weight: 600; }
+    .ia-subtitle { font-size: 9px; }
+
+    .ia-input-area {
+      background: #0A1020;
+      border-radius: 8px;
+      padding: 8px;
+      margin: 8px 0;
+    }
+    .ia-input-area textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 11px;
+      resize: none;
+      outline: none;
+      font-family: Inter;
+    }
+
+    .ia-actions {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .ia-action-btn {
+      flex: 1;
+      background: #1E2743;
+      border-radius: 12px;
+      padding: 6px 2px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--text-dim);
+      cursor: pointer;
+      text-align: center;
+      min-width: 50px;
+      border: none;
+    }
+
+    .ia-suggestions {
+      margin-top: 8px;
+    }
+    .suggestion-item {
+      background: #141C33;
+      border-left: 2px solid var(--accent-purple);
+      padding: 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+
+    /* Main content with two text boxes */
+    .main {
+      grid-area: main;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background:
+        radial-gradient(900px 600px at 70% 20%, rgba(79,124,247,.08) 0%, transparent 70%),
+        radial-gradient(600px 400px at 20% 60%, rgba(0,212,255,.08) 0%, transparent 70%);
+    }
+
+    .editor {
+      background: var(--panel);
+      border: 1px solid var(--muted);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      min-height: 400px;
+    }
+
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(79,124,247,.1);
+    }
+    .page-number {
+      font-size: 10px;
+      color: var(--text-dim);
+      background: #1E2743;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .page-tools {
+      display: flex;
+      gap: 4px;
+    }
+    .page-tool {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      background: #1E2743;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .editor textarea {
+      flex: 1;
+      width: 100%;
+      resize: none;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 12px;
+      line-height: 1.5;
+      font-family: Inter;
+    }
+
+    .editor-footer {
+      margin-top: 8px;
+      padding-top: 4px;
+      border-top: 1px solid rgba(79,124,247,.1);
+      font-size: 9px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Bottom bar - mais compacta */
+    .bottombar {
+      grid-area: bottombar;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 16px;
+      background: linear-gradient(0deg, #0D1324, var(--bg-1));
+      border-top: 1px solid rgba(79,124,247,.22);
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+    .status-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .status-chip {
+      background: #12172B;
+      border: 1px solid rgba(255,255,255,.06);
+      padding: 4px 10px;
+      border-radius: 20px;
+      color: #CFE2FF;
+      font-size: 10px;
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.6; transform: scale(1); }
+    }
+    .clock {
+      color: #EAF0FF;
+      background: #1E2743;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+    }
+    .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255,255,255,0.05);
+            padding: 8px 16px 8px 8px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .admin-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .admin-info {
+            line-height: 1.4;
+        }
+        .admin-info strong {
+            color: white;
+            font-size: 14px;
+        }
+        .admin-info span {
+            color: var(--text-dim);
+            font-size: 11px;
+            display: block;
+        }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Topbar compacta -->
+    <header class="topbar">
+      <div class="logo">NotesNBooks</div>
+
+      <nav class="tabs">
+        <button class="tab" onclick="window.location.href='tela_dashbord001.html'">Dashbord</button>
+        <button class="tab active" onclick="window.location.href='tela_biblioteca001.html'">Biblioteca</button>
+        <button class="tab" onclick="window.location.href='tela_concursos001.html'">Concursos</button>
+      </nav>
+
+      <div class="spacer"></div>
+
+      <div class="search">
+        <span>🔍</span>
+        <input type="search" placeholder="Pesquisar..." />
+      </div>
+
+      <div class="admin-user">
+                <div class="admin-avatar">D</div>
+                <div class="admin-info">
+                    <strong>Dev Admin</strong>
+                    <span>admin@notesnbooks.com</span>
+                </div>
+            </div>
+    </header>
+
+    <!-- Sidebar vazia (removidos os ícones) -->
+    <aside class="sidebar"></aside>
+
+    <!-- Tools Panel -->
+    <div class="tools-panel">
+      <!-- Ferramentas de Escrita -->
+      <div class="tools-section">
+        <div class="section-title">✏️ Ferramentas</div>
+        <div class="writing-tools">
+          <div class="tool-btn"><span>𝐁</span><small>Negrito</small></div>
+          <div class="tool-btn"><span>𝐼</span><small>Itálico</small></div>
+          <div class="tool-btn"><span>_</span><small>Linha</small></div>
+          <div class="tool-btn"><span>H1</span><small>Título</small></div>
+          <div class="tool-btn"><span>•</span><small>Lista</small></div>
+          <div class="tool-btn"><span>"</span><small>Citar</small></div>
+          <div class="tool-btn"><span>🔗</span><small>Link</small></div>
+          <div class="tool-btn"><span>🖼️</span><small>Imagem</small></div>
+        </div>
+
+        <div class="tool-row">
+          <span class="tool-chip">📷 Desenhar</span>
+          <span class="tool-chip">🎨 Figurinhas</span>
+          <span class="tool-chip">📎 Anexar</span>
+        </div>
+
+        <div class="color-palette">
+          <div class="color-dot" style="background: #FF6B6B;"></div>
+          <div class="color-dot" style="background: #4ECDC4;"></div>
+          <div class="color-dot" style="background: #FFD93D;"></div>
+          <div class="color-dot" style="background: #9D7CF7;"></div>
+          <div class="color-dot" style="background: #6BCB77;"></div>
+          <div class="color-dot selected" style="background: #FFFFFF;"></div>
+        </div>
+      </div>
+
+      <!-- Área da IA -->
+      <div class="ia-section">
+        <div class="ia-header">
+          <div class="ia-icon">✨</div>
+          <div>
+            <div class="ia-title">Assistente IA</div>
+            <div class="ia-subtitle">Sempre pronto</div>
+          </div>
+        </div>
+
+        <div class="ia-input-area">
+          <textarea rows="2" placeholder="Peça ajuda à IA..."></textarea>
+        </div>
+
+        <div class="ia-actions">
+          <button class="ia-action-btn">✍️ Continuar</button>
+          <button class="ia-action-btn">🎭 Personagem</button>
+          <button class="ia-action-btn">📝 Resumir</button>
+          <button class="ia-action-btn">✨ Criar</button>
+        </div>
+
+        <div class="ia-suggestions">
+          <div class="suggestion-item">✨ Continue com um diálogo...</div>
+          <div class="suggestion-item">🎨 Que tal uma reviravolta?</div>
+          <div class="suggestion-item">📌 Descreva mais o cenário</div>
+        </div>
+      </div>
+
+      <!-- Scanner -->
+      <div class="tools-section">
+        <div class="section-title">📷 Scanner</div>
+        <div style="background: #0A1020; border-radius: 6px; padding: 8px; text-align: center;">
+          <span style="font-size: 20px;">📄</span>
+          <p style="font-size: 10px; margin: 4px 0;">Escanear texto</p>
+          <button class="tool-chip">Importar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main com duas páginas -->
+    <main class="main">
+      <!-- Página 1 -->
+      <section class="editor">
+        <div class="editor-header">
+          <span class="page-number">📄 Página 1</span>
+          <div class="page-tools">
+            <button class="page-tool">🔍</button>
+            <button class="page-tool">📋</button>
+          </div>
+        </div>
+        <textarea placeholder="Insira seu texto aqui... (Página 1)">Era uma vez, em uma pequena vila à beira-mar, uma escritora que buscava inspiração para sua próxima história. As ondas quebravam suavemente na costa, enquanto o vento sussurrava segredos antigos entre as palmeiras.</textarea>
+        <div class="editor-footer">
+          <span>243 palavras</span>
+          <span>❤️ Salvo</span>
+        </div>
+      </section>
+
+      <!-- Página 2 -->
+      <section class="editor">
+        <div class="editor-header">
+          <span class="page-number">📄 Página 2</span>
+          <div class="page-tools">
+            <button class="page-tool">🔍</button>
+            <button class="page-tool">📋</button>
+          </div>
+        </div>
+        <textarea placeholder="Insira seu texto aqui... (Página 2)">Ela decidiu que sua história falaria sobre amor, perda e redenção. Os personagens ganhavam vida a cada palavra digitada, e a trama se desenrolava como as ondas do mar - imprevisível e bela.</textarea>
+        <div class="editor-footer">
+          <span>156 palavras</span>
+          <span>⏳ Editando</span>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom bar -->
+    <footer class="bottombar">
+      <div class="status-left">
+        <span class="status-chip">📝 Rascunho</span>
+        <span class="dot"></span>
+        <span>Salvando...</span>
+        <span>🔒 Privado</span>
+      </div>
+      <div class="status-right">
+        <span>✨ IA ativa</span>
+        <span>18/02/2026</span>
+        <span class="clock">15:42</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
